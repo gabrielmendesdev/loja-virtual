@@ -92,7 +92,7 @@ public class ProductCategoryFrame extends JFrame {
 		modelo.addColumn("Nome do produto");
 		modelo.addColumn("Descrição do produto");
 
-		preencherTabela();
+		fillTable();
 
 		tabela.setBounds(10, 185, 760, 300);
 		container.add(tabela);
@@ -113,25 +113,25 @@ public class ProductCategoryFrame extends JFrame {
 		botaoSalvar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				salvar();
-				limparTabela();
-				preencherTabela();
+				save();
+				clearTable();
+				fillTable();
 			}
 		});
 
 		botaoLimpar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				limpar();
+				clear();
 			}
 		});
 
 		botarApagar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				deletar();
-				limparTabela();
-				preencherTabela();
+				delete();
+				clearTable();
+				fillTable();
 			}
 		});
 
@@ -139,13 +139,13 @@ public class ProductCategoryFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				alterar();
-				limparTabela();
-				preencherTabela();
+				clearTable();
+				fillTable();
 			}
 		});
 	}
 
-	private void limparTabela() {
+	private void clearTable() {
 		modelo.getDataVector().clear();
 	}
 
@@ -161,7 +161,7 @@ public class ProductCategoryFrame extends JFrame {
 		}
 	}
 
-	private void deletar() {
+	private void delete() {
 		Object objetoDaLinha = (Object) modelo.getValueAt(tabela.getSelectedRow(), tabela.getSelectedColumn());
 		if (objetoDaLinha instanceof Integer) {
 			Integer id = (Integer) objetoDaLinha;
@@ -173,7 +173,7 @@ public class ProductCategoryFrame extends JFrame {
 		}
 	}
 
-	private void preencherTabela() {
+	private void fillTable() {
 		List<Product> products = listProduct();
 		try {
 			for (Product product : products) {
@@ -188,14 +188,14 @@ public class ProductCategoryFrame extends JFrame {
 		return this.categoryController.list();
 	}
 
-	private void salvar() {
+	private void save() {
 		if (!textoName.getText().equals("") && !textoDescription.getText().equals("")) {
 			Product product = new Product(textoName.getText(), textoDescription.getText());
 			Category category = (Category) comboCategory.getSelectedItem();
 			product.setCategoryId(category.getId());
 			this.productController.salvar(product);
 			JOptionPane.showMessageDialog(this, "Salvo com sucesso!");
-			this.limpar();
+			this.clear();
 		} else {
 			JOptionPane.showMessageDialog(this, "Nome e descrição devem ser informados.");
 		}
@@ -205,7 +205,7 @@ public class ProductCategoryFrame extends JFrame {
 		return this.productController.listar();
 	}
 
-	private void limpar() {
+	private void clear() {
 		this.textoName.setText("");
 		this.textoDescription.setText("");
 		this.comboCategory.setSelectedIndex(0);
